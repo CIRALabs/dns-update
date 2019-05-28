@@ -53,6 +53,12 @@ module DnsUpdate
       model
     end
 
+    def validate_remove_aaaa(model)
+      check_hostname model.hostname
+      model.zone ||= domain(model.hostname)
+      model
+    end
+
     def validate_remove_cname(model)
       check_hostname model.hostname
       model.zone ||= domain(model.hostname)
