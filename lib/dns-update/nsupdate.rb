@@ -44,14 +44,20 @@ EOF
     def nsupdate(model)
       render = render_update model
       if !model.print_only && !settings[:print_only]
-        status = IO.popen("nsupdate -y #{settings[:key_name]}:#{settings[:secret]} -v", 'r+') do |f|
+        IO.popen(["nsupdate", "-y",
+                  settings[:key_name]+":"+settings[:secret],
+                  "-v"], 'r+') do |f|
           f << render
           f.close_write
           puts f.read
+          true
         end
+        # get status of popen!
+        status = $?
       else
         puts render
       end
+      status.exitstatus == 0 ? true : status
     end
 
     private
