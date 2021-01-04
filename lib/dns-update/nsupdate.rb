@@ -54,10 +54,11 @@ EOF
         end
         # get status of popen!
         status = $?
+        status.exitstatus == 0 ? true : status
       else
         puts render
+        true
       end
-      status.exitstatus == 0 ? true : status
     end
 
     private
